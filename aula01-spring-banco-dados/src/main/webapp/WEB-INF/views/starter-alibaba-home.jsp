@@ -119,7 +119,7 @@
 							<c:otherwise>
 								<li class="nav-item"><a href="#" class="nav-link">
 										Multi Request </a></li>
-								<li class="nav-item"><a href="to-admin-login-page.html"
+								<li class="nav-item"><a href="admin-login-page"
 									class="nav-link"> Admin login </a></li>
 
 							</c:otherwise>

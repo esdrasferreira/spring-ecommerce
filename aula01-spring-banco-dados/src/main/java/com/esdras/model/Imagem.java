@@ -2,24 +2,34 @@ package com.esdras.model;
 
 public class Imagem {
 
-	private int id;
+	private int imagemid;
+	private int produtoid;
 	private String nome;
 
-	private int produtoId;
-	// ManyToOne
-	private Produto produto;
+	public Imagem() {
+	}
 
-	public Imagem(int id, String nome) {
-		this.id = id;
+	public Imagem(int imagemid, int produtoid, String nome) {
+
+		this.imagemid = imagemid;
+		this.produtoid = produtoid;
 		this.nome = nome;
 	}
 
-	public int getId() {
-		return id;
+	public int getImagemid() {
+		return imagemid;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setImagemid(int imagemid) {
+		this.imagemid = imagemid;
+	}
+
+	public int getProdutoid() {
+		return produtoid;
+	}
+
+	public void setProdutoid(int produtoid) {
+		this.produtoid = produtoid;
 	}
 
 	public String getNome() {
@@ -28,22 +38,6 @@ public class Imagem {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Produto getProduto() {
-		return produto;
-	}
-
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
-
-	public int getProdutoId() {
-		return produtoId;
-	}
-
-	public void setProdutoId(int produtoId) {
-		this.produtoId = produtoId;
 	}
 
 }

@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -105,8 +106,23 @@ public class ImagemDao implements DaoGenerico<Imagem> {
 
 	@Override
 	public Page<Imagem> todosComPaginacao(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		String rowCountSql = "SELECT count(1) AS total from andregon_ecommerce.imagens";
+
+		int total = jdbcTemplate.queryForObject(rowCountSql, (rs, numRows) -> rs.getInt(1));
+
+		String sql = "select  * from andregon_ecommerce.imagens order by andregon_ecommerce.imagens.produtoId desc limit "
+				+ pageable.getPageSize() + "," + pageable.getOffset();
+
+		List<Imagem> imagens = jdbcTemplate.query(sql, new RowMapper<Imagem>() {
+			public Imagem mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+				Imagem imagem = new Imagem(rs.getInt(1), rs.getInt(2), rs.getString(3));
+
+				return imagem;
+			}
+		});
+
+		return new PageImpl<>(imagens, pageable, total);
 	}
 
 }

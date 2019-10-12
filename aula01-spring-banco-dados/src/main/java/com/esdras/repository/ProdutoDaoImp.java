@@ -81,7 +81,7 @@ public class ProdutoDaoImp implements DaoGenerico<Produto> {
 	@Override
 	public Page<Produto> todosComPaginacao(Pageable pageable) {
 
-		String rowCountSql = "SELECT count(1) AS total from produtos";
+		String rowCountSql = "SELECT count(1) AS total from andregon_ecommerce.produtos";
 		int total = jdbcTemplate.queryForObject(rowCountSql, (rs, numRows) -> rs.getInt(1));
 
 		String sql = "select andregon_ecommerce.produtos.*, andregon_ecommerce.categorias.* from andregon_ecommerce.produtos, andregon_ecommerce.categorias\n"

@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esdras.model.Categoria;
+import com.esdras.model.Imagem;
 import com.esdras.model.Produto;
 import com.esdras.service.CategoriaService;
+import com.esdras.service.ImagemService;
 import com.esdras.service.ProdutoService;
 
 @Controller
@@ -23,6 +25,9 @@ public class ProdutoController {
 
 	@Autowired
 	private CategoriaService categoriaService;
+
+	@Autowired
+	ImagemService imgService;
 
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView home(@RequestParam(value = "pagina", required = false) Integer page_num,
@@ -65,13 +70,28 @@ public class ProdutoController {
 			page_num = 1;
 		}
 
-		List<Produto> todosProdutos = produtoService.todosComPaginacao(page_num, totalPorPagina);
-		model.addObject("produtosList", todosProdutos);
-		model.addObject("numeroDepaginas", produtoService.getPaginas());
-		model.addObject("pagina", page_num);
-		model.addObject("total", produtoService.getTotalEncontrado());
+		List<Categoria> categorias = categoriaService.todos();
+		model.addObject("categorias", categorias);
 
-		model.setViewName("listarTodosProdutos");
+		List<Produto> produtos = produtoService.todosComPaginacao(page_num, totalPorPagina);
+
+		List<Imagem> imagens = imgService.todosComPaginacao(page_num, totalPorPagina);
+
+		for (Imagem imagem : imagens) {
+			for (Produto produto : produtos) {
+				if (produto.getProdutoid() == imagem.getProdutoid()) {
+					produto.setImagem(imagem);
+					System.out.println("Adicionado imagem ao produto ]]]]]]]]]]]]]]]]]]]]]]]]]]" + imagem.getNome());
+				}
+			}
+		}
+
+		model.addObject("catEprod", produtos);
+		model.addObject("numeroDePaginas", produtoService.getPaginas());
+		model.addObject("pagina", page_num);
+		model.addObject("totalEncontrado", produtoService.getTotalEncontrado());
+
+		model.setViewName("/admin/starter-page-order");
 
 		return model;
 	}

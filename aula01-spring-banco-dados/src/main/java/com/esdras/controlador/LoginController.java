@@ -24,6 +24,10 @@ public class LoginController {
 	@Autowired
 	private AdminService adminService;
 
+	/*
+	 * Método que recebe o login do usuario e após validar envia para homepage
+	 * novamente com o login efetuado
+	 */
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
 	public ModelAndView login(@RequestParam("email") String email, @RequestParam("senha") String senha,
 			HttpSession session, ModelMap modelMap, ModelAndView model) {
@@ -35,9 +39,13 @@ public class LoginController {
 
 			cliente = (Cliente) clienteService.pesquisar(cliente);
 			if (cliente == null) {
+				/*
+				 * se o login for invalido redireciona para homepage novamente sem efetuar o
+				 * login
+				 */
 				model.setViewName("starter-alibaba-home");
 			} else {
-
+				/* se o login validado cria a sessao e direciona para homepage */
 				session.setAttribute("cliente", cliente);
 				model.setViewName("redirect:/");
 			}
@@ -46,6 +54,10 @@ public class LoginController {
 		return model;
 	}
 
+	/*
+	 * Método que recebe o login do Administrador e após validar, direciona para
+	 * classe esdras.controlador
+	 */
 	@RequestMapping(value = { "/adm-page" }, method = RequestMethod.POST)
 	public ModelAndView admPage(@RequestParam("email") String email, @RequestParam("senha") String senha,
 			HttpSession session, ModelMap modelMap, ModelAndView model) {
@@ -69,6 +81,7 @@ public class LoginController {
 		return model;
 	}
 
+	/* Método que realiza o logout e direciona para home page novamente */
 	@RequestMapping(value = { "/logout" }, method = RequestMethod.POST)
 	public ModelAndView logout(ModelAndView model, HttpSession session) {
 		session.invalidate();
@@ -78,6 +91,7 @@ public class LoginController {
 		return model;
 	}
 
+	/* Método que direciona para a pagina de login para administrador */
 	@RequestMapping(value = { "/admin-login-page" }, method = RequestMethod.GET)
 	public ModelAndView loginAdmin(ModelAndView model, HttpSession session) {
 		session.invalidate();

@@ -32,8 +32,9 @@ public class LoginController {
 			if (cliente == null) {
 				model.setViewName("starter-alibaba-home");
 			} else {
+
 				session.setAttribute("cliente", cliente);
-				model.setViewName("/");
+				model.setViewName("redirect:/");
 			}
 		}
 
@@ -44,7 +45,7 @@ public class LoginController {
 	public ModelAndView produtos(ModelAndView model, HttpSession session) {
 		session.invalidate();
 
-		model.setViewName("/");
+		model.setViewName("redirect:/");
 
 		return model;
 	}

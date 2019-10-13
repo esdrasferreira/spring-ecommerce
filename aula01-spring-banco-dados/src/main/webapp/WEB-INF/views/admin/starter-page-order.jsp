@@ -352,12 +352,12 @@
 								<div  padding-left: ($spacer * .5) !important;>
 															<%-- --------INICIO escolha de figura para upload------- --%>
 
-														<form class="form-inline" action="${pageContext.request.contextPath}/upload.html" method="post"
+														<form class="form-inline" action="/fotos" method="post"
 															enctype="multipart/form-data">
 															<div class="input-group mb-3">
 																<div class="custom-file">
 
-																	<input type="file" name="upload"
+																	<input type="file" name="foto"
 																		class="custom-file-input" id="inputGroupFile02">
 																	<label class="custom-file-label" for="inputGroupFile02"></label>
 

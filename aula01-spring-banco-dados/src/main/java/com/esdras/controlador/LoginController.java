@@ -56,7 +56,7 @@ public class LoginController {
 
 	/*
 	 * Método que recebe o login do Administrador e após validar, direciona para
-	 * classe esdras.controlador
+	 * classe esdras.controlador pagina CRUD
 	 */
 	@RequestMapping(value = { "/adm-page" }, method = RequestMethod.POST)
 	public ModelAndView admPage(@RequestParam("email") String email, @RequestParam("senha") String senha,
@@ -81,9 +81,24 @@ public class LoginController {
 		return model;
 	}
 
-	/* Método que realiza o logout e direciona para home page novamente */
-	@RequestMapping(value = { "/logout" }, method = RequestMethod.POST)
+	/*
+	 * Método que realiza o logout do Administrador e direciona para home page
+	 * novamente
+	 */
+	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
 	public ModelAndView logout(ModelAndView model, HttpSession session) {
+		session.invalidate();
+
+		model.setViewName("redirect:/");
+
+		return model;
+	}
+
+	/*
+	 * Método que realiza o logout do Usuario e direciona para home page novamente
+	 */
+	@RequestMapping(value = { "/signout" }, method = RequestMethod.POST)
+	public ModelAndView signout(ModelAndView model, HttpSession session) {
 		session.invalidate();
 
 		model.setViewName("redirect:/");

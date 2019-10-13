@@ -113,7 +113,7 @@
 										Produtos JSON </a></li>
 								<li class="nav-item"><a href="#" class="nav-link">
 										Admin: ${admin.nome} </a></li>
-								<li class="nav-item"><a href="logout.html" class="nav-link">
+								<li class="nav-item"><a href="\logout" class="nav-link">
 										Logout </a></li>
 							</c:when>
 							<c:otherwise>
@@ -191,7 +191,7 @@
 										</div>
 									</a>
 									<div class="dropdown-menu">
-										<form class="px-4 py-3" action="\logout" method="post">
+										<form class="px-4 py-3" action="\signout" method="post">
 
 											<button type="submit" class="btn btn-primary">Sign
 												out</button>

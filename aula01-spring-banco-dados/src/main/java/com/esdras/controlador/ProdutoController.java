@@ -29,6 +29,7 @@ public class ProdutoController {
 	@Autowired
 	ImagemService imgService;
 
+	/* metodo carrega itens para alimentar pagina home e direcioa para home-page */
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView home(@RequestParam(value = "pagina", required = false) Integer page_num,
 
@@ -59,6 +60,10 @@ public class ProdutoController {
 		return model;
 	}
 
+	/*
+	 * método carrega itens para alimentar pagina CRUD e direciana para paginaCRUD
+	 * starter-page-order
+	 */
 	@RequestMapping(value = { "/produtos" }, method = RequestMethod.GET)
 	public ModelAndView produtos(@RequestParam(value = "pagina", required = false) Integer page_num,
 

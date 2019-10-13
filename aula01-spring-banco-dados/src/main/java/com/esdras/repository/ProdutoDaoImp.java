@@ -45,7 +45,8 @@ public class ProdutoDaoImp implements DaoGenerico<Produto> {
 	}
 
 	public void excluir(Produto produto) {
-		jdbcTemplate.update("DELETE FROM andregon_ecommerce.produtos WHERE produtoId = ?", produto.getProdutoid());
+		jdbcTemplate
+				.update("DELETE FROM andregon_ecommerce.produtos WHERE produtoId = '" + produto.getProdutoid() + "'");
 
 	}
 

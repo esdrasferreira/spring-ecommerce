@@ -193,7 +193,7 @@ public class ProdutoController {
 
 			model.setViewName("redirect:/produtos");
 
-		} else if (salvar != null && descricao == null || descricao.isEmpty()) {
+		} else if (salvar != null) {
 
 			Produto produto = produtoService.pesquisarPorId(produtoid);
 

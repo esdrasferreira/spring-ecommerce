@@ -86,7 +86,7 @@ public class ProdutoDaoImp implements DaoGenerico<Produto> {
 
 		String sql = "select andregon_ecommerce.produtos.*, andregon_ecommerce.categorias.* from andregon_ecommerce.produtos, andregon_ecommerce.categorias\n"
 				+ "where andregon_ecommerce.produtos.categoriaId = andregon_ecommerce.categorias.categoriaId order by andregon_ecommerce.produtos.produtoId desc limit "
-				+ pageable.getPageSize() + "," + pageable.getOffset();
+				+ pageable.getPageSize() + " " + "offset " + pageable.getOffset();
 
 //		String sql = "SELECT * from produtos " + "LIMIT " + pageable.getPageSize() + " " + "OFFSET "
 //				+ pageable.getOffset();
@@ -95,13 +95,10 @@ public class ProdutoDaoImp implements DaoGenerico<Produto> {
 
 			public Produto mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-				Produto produto = new Produto();
-				produto.setProdutoid(rs.getInt("produtoid"));
-				produto.setCategoriaid(rs.getInt("categoriaid"));
-				produto.setNome(rs.getString("nome"));
-				produto.setDescricao(rs.getString("descricao"));
-				produto.setValor(rs.getDouble("valor"));
-				produto.setCategoria(new Categoria(rs.getInt("categoriaid"), rs.getString("nomecategoria")));
+				Produto produto = new Produto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
+						rs.getDouble(5));
+
+				produto.setCategoria(new Categoria(rs.getInt(6), rs.getString(7)));
 
 				return produto;
 

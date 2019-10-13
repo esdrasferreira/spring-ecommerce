@@ -111,7 +111,7 @@ public class ImagemDao implements DaoGenerico<Imagem> {
 		int total = jdbcTemplate.queryForObject(rowCountSql, (rs, numRows) -> rs.getInt(1));
 
 		String sql = "select  * from andregon_ecommerce.imagens order by andregon_ecommerce.imagens.produtoId desc limit "
-				+ pageable.getPageSize() + "," + pageable.getOffset();
+				+ pageable.getPageSize() + " " + "offset " + pageable.getOffset();
 
 		List<Imagem> imagens = jdbcTemplate.query(sql, new RowMapper<Imagem>() {
 			public Imagem mapRow(ResultSet rs, int rowNum) throws SQLException {

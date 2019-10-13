@@ -87,6 +87,9 @@ public class ProdutoController {
 		}
 
 		model.addObject("catEprod", produtos);
+		System.out.println("numero de paginas: " + produtoService.getPaginas());
+		System.out.println("pagina: " + page_num);
+		System.out.println("totalEncontrado: " + produtoService.getTotalEncontrado());
 		model.addObject("numeroDePaginas", produtoService.getPaginas());
 		model.addObject("pagina", page_num);
 		model.addObject("totalEncontrado", produtoService.getTotalEncontrado());

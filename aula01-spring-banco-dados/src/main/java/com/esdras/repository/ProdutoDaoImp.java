@@ -50,7 +50,8 @@ public class ProdutoDaoImp implements DaoGenerico<Produto> {
 	}
 
 	public Produto pesquisarPorId(int id) {
-		String sql = "SELECT * FROM produtos WHERE id=" + id;
+		String sql = "select * from andregon_ecommerce.produtos where andregon_ecommerce.produtos.produtoid = '" + id
+				+ "'";
 		return jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Produto.class));
 
 	}

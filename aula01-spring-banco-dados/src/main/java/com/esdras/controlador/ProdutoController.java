@@ -131,39 +131,90 @@ public class ProdutoController {
 
 		if (session.getAttribute("admin") == null) {
 			model.setViewName("redirect:/");
-		}
-
-		Categoria categoria = new Categoria();
-		categoria.setNome(novaCategoria);
-
-		Produto produto = new Produto();
-		produto.setNome(nomeProduto);
-		produto.setDescricao(descrProduto);
-		produto.setValor(valor);
-
-		if (novaCategoria != null && novaCategoria != "") {
-
-			/*
-			 * se houver nova categoria a ser cadastrada, então cadastra a mesma e utiliza a
-			 * nova ID de categoria para salvar o novo produto
-			 */
-			categoriaService.salvar(categoria);
-
-			Categoria nCategoria = (Categoria) categoriaService.pesquisar(categoria);
-			produto.setCategoriaid(nCategoria.getCategoriaid());
-
 		} else {
-			/*
-			 * se a categoria já é existente apenas usa o ID resgatado do JSP para salvar
-			 * novo produto
-			 */
 
-			produto.setCategoriaid(categoriaid);
+			Categoria categoria = new Categoria();
+			categoria.setNome(novaCategoria);
+
+			Produto produto = new Produto();
+			produto.setNome(nomeProduto);
+			produto.setDescricao(descrProduto);
+			produto.setValor(valor);
+
+			if (novaCategoria != null && novaCategoria != "") {
+
+				/*
+				 * se houver nova categoria a ser cadastrada, então cadastra a mesma e utiliza a
+				 * nova ID de categoria para salvar o novo produto
+				 */
+				categoriaService.salvar(categoria);
+
+				Categoria nCategoria = (Categoria) categoriaService.pesquisar(categoria);
+				produto.setCategoriaid(nCategoria.getCategoriaid());
+
+			} else {
+				/*
+				 * se a categoria já é existente apenas usa o ID resgatado do JSP para salvar
+				 * novo produto
+				 */
+
+				produto.setCategoriaid(categoriaid);
+			}
+
+			produtoService.salvar(produto);
+
+			model.setViewName("redirect:/produtos");
 		}
 
-		produtoService.salvar(produto);
+		return model;
+	}
 
-		model.setViewName("redirect:/produtos");
+	/*
+	 * método atualiza ou exclui produto carrega pag CRUD novamente
+	 * starter-page-order
+	 */
+	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
+	public ModelAndView updateOrDelete(@RequestParam(value = "salvar", required = false) String salvar,
+			@RequestParam(value = "categoria-id", required = false) Integer categoria_id,
+			@RequestParam(value = "produtoid", required = false) Integer produtoid,
+			@RequestParam(value = "produtonome", required = false) String nome,
+			@RequestParam(value = "descricaoProduto", required = false) String descricao,
+			@RequestParam(value = "valorProduto", required = false) Double valor,
+
+			ModelAndView model, HttpSession session) {
+
+		/* se salvar não for nulo então atualiza o produto */
+		if (salvar != null && !descricao.isEmpty()) {
+
+			Produto produto = new Produto(produtoid, categoria_id, nome, descricao, valor);
+			session.setAttribute("produto", produto);
+
+			produtoService.atualizar(produto);
+
+			model.setViewName("redirect:/produtos");
+
+		} else if (salvar != null && descricao == null || descricao.isEmpty()) {
+
+			Produto produto = produtoService.pesquisarPorId(produtoid);
+
+			produto.setCategoriaid(categoria_id);
+			produto.setNome(nome);
+			produto.setValor(valor);
+			session.setAttribute("produto", produto);
+
+			produtoService.atualizar(produto);
+
+			model.setViewName("redirect:/produtos");
+		} else {
+			/* se salvar é nulo então exclui o produto */
+			Produto produto = new Produto();
+			produto.setProdutoid(produtoid);
+			session.setAttribute("produto", produto);
+
+			produtoService.excluir(produto);
+
+			model.setViewName("redirect:/produtos");
+		}
 
 		return model;
 	}

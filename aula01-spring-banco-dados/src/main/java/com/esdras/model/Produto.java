@@ -6,7 +6,7 @@ public class Produto {
 	private String nome;
 	private String descricao;
 	private Double valor;
-	private Produto parent;
+
 	private Categoria categoria;
 	private Imagem imagem;
 
@@ -20,16 +20,6 @@ public class Produto {
 		this.nome = nome;
 		this.descricao = descricao;
 		this.valor = valor;
-	}
-
-	public Produto(int produtoid, int categoriaid, String nome, String descricao, Double valor, Produto parent) {
-
-		this.produtoid = produtoid;
-		this.categoriaid = categoriaid;
-		this.nome = nome;
-		this.descricao = descricao;
-		this.valor = valor;
-		this.parent = parent;
 	}
 
 	public int getProdutoid() {
@@ -86,11 +76,6 @@ public class Produto {
 
 	public void setImagem(Imagem imagem) {
 		this.imagem = imagem;
-	}
-
-	public Produto deepCopy() {
-		return new Produto(this.produtoid, this.categoriaid, this.nome, this.descricao, this.valor,
-				this.parent != null ? this.parent.deepCopy() : null);
 	}
 
 }

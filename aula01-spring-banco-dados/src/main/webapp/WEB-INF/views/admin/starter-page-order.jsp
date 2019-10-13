@@ -270,7 +270,7 @@
 								<tr>
 									<!--form  START-->
 
-									<form action="${pageContext.request.contextPath}/excluir-update.html" method="post" enctype="multipart/form-data">
+									<form action="/update" method="post" enctype="multipart/form-data">
 										<td> 
 										  
 											<figure class="media">

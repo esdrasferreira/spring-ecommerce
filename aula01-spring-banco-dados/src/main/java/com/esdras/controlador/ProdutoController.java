@@ -3,6 +3,8 @@ package com.esdras.controlador;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,39 +69,101 @@ public class ProdutoController {
 	@RequestMapping(value = { "/produtos" }, method = RequestMethod.GET)
 	public ModelAndView produtos(@RequestParam(value = "pagina", required = false) Integer page_num,
 
-			ModelAndView model) {
+			ModelAndView model, HttpSession session) {
 
-		int totalPorPagina = 5;
+		if (session.getAttribute("admin") == null) {
+			model.setViewName("redirect:/");
+		} else {
 
-		if (page_num == null) {
-			page_num = 1;
-		}
+			int totalPorPagina = 5;
 
-		List<Categoria> categorias = categoriaService.todos();
-		model.addObject("categorias", categorias);
+			if (page_num == null) {
+				page_num = 1;
+			}
 
-		List<Produto> produtos = produtoService.todosComPaginacao(page_num, totalPorPagina);
+			List<Categoria> categorias = categoriaService.todos();
+			model.addObject("categorias", categorias);
 
-		List<Imagem> imagens = imgService.todosComPaginacao(page_num, totalPorPagina);
+			List<Produto> produtos = produtoService.todosComPaginacao(page_num, totalPorPagina);
 
-		for (Imagem imagem : imagens) {
-			for (Produto produto : produtos) {
-				if (produto.getProdutoid() == imagem.getProdutoid()) {
-					produto.setImagem(imagem);
-					System.out.println("Adicionado imagem ao produto ]]]]]]]]]]]]]]]]]]]]]]]]]]" + imagem.getNome());
+			List<Imagem> imagens = imgService.todosComPaginacao(page_num, totalPorPagina);
+
+			for (Imagem imagem : imagens) {
+				for (Produto produto : produtos) {
+					if (produto.getProdutoid() == imagem.getProdutoid()) {
+						produto.setImagem(imagem);
+						System.out
+								.println("Adicionado imagem ao produto ]]]]]]]]]]]]]]]]]]]]]]]]]]" + imagem.getNome());
+					}
 				}
 			}
+
+			for (Produto produto : produtos) {
+				System.out.println("--------------------------------Descrição do produto: " + produto.getDescricao());
+			}
+
+			model.addObject("catEprod", produtos);
+			System.out.println("numero de paginas: " + produtoService.getPaginas());
+			System.out.println("pagina: " + page_num);
+			System.out.println("totalEncontrado: " + produtoService.getTotalEncontrado());
+			model.addObject("numeroDePaginas", produtoService.getPaginas());
+			model.addObject("pagina", page_num);
+			model.addObject("totalEncontrado", produtoService.getTotalEncontrado());
+
+			model.setViewName("/admin/starter-page-order");
 		}
 
-		model.addObject("catEprod", produtos);
-		System.out.println("numero de paginas: " + produtoService.getPaginas());
-		System.out.println("pagina: " + page_num);
-		System.out.println("totalEncontrado: " + produtoService.getTotalEncontrado());
-		model.addObject("numeroDePaginas", produtoService.getPaginas());
-		model.addObject("pagina", page_num);
-		model.addObject("totalEncontrado", produtoService.getTotalEncontrado());
+		return model;
+	}
 
-		model.setViewName("/admin/starter-page-order");
+	/*
+	 * método adiciona novo produto ao banco de dados e direciana para metodo que
+	 * carrega pag CRUD novamente starter-page-order
+	 */
+	@RequestMapping(value = { "/addProduto" }, method = RequestMethod.POST)
+	public ModelAndView addProdutos(@RequestParam(value = "categoria", required = false) Integer categoriaid,
+			@RequestParam(value = "nova-categoria", required = false) String novaCategoria,
+			@RequestParam(value = "nomeProduto", required = false) String nomeProduto,
+			@RequestParam(value = "descrProduto", required = false) String descrProduto,
+			@RequestParam(value = "valorProduto", required = false) Double valor,
+
+			ModelAndView model, HttpSession session) {
+
+		if (session.getAttribute("admin") == null) {
+			model.setViewName("redirect:/");
+		}
+
+		Categoria categoria = new Categoria();
+		categoria.setNome(novaCategoria);
+
+		Produto produto = new Produto();
+		produto.setNome(nomeProduto);
+		produto.setDescricao(descrProduto);
+		produto.setValor(valor);
+
+		if (novaCategoria != null && novaCategoria != "") {
+
+			/*
+			 * se houver nova categoria a ser cadastrada, então cadastra a mesma e utiliza a
+			 * nova ID de categoria para salvar o novo produto
+			 */
+			categoriaService.salvar(categoria);
+
+			Categoria nCategoria = (Categoria) categoriaService.pesquisar(categoria);
+			produto.setCategoriaid(nCategoria.getCategoriaid());
+
+		} else {
+			/*
+			 * se a categoria já é existente apenas usa o ID resgatado do JSP para salvar
+			 * novo produto
+			 */
+
+			produto.setCategoriaid(categoriaid);
+		}
+
+		produtoService.salvar(produto);
+
+		model.setViewName("redirect:/produtos");
 
 		return model;
 	}

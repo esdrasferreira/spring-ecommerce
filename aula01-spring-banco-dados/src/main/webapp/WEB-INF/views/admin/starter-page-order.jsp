@@ -163,7 +163,7 @@
 
 							<tr>
 								<!--form  START-->
-								<form action="${pageContext.request.contextPath}/add-produto.html" method="post">
+								<form action="/addProduto" method="post">
 									<td>
 										<figure class="media">
 											<div class="img-wrap">
@@ -309,7 +309,7 @@
 														placeholder="${produtos.nome}"> <textarea
 													class="form-control mb-2"  name="descricaoProduto"
 													style="background-color: white;"
-													placeholder="${produtos.imagem.nome }" rows="3"></textarea>
+													placeholder="${produtos.descricao }" rows="3"></textarea>
 														<div class="row"> <%--open row --%>
 														<div class="col"><%--open col1 --%>
 														<input class="form-control  col-sm-4  text-right" type="number"

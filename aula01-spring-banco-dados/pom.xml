@@ -20,6 +20,7 @@
 	</properties>
 
 	<dependencies>
+	
 
 		<!-- Dependencias adicionadas para retirar pool de Hikari e deixar apenas 
 			o TOMCAT -->

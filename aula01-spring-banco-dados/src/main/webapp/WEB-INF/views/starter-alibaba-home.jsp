@@ -106,7 +106,7 @@
 						<c:choose>
 							<c:when test="${admin.nome != null}">
 								<li class="nav-item"><a
-									href="/produtos" class="nav-link">
+									href="${pageContext.request.contextPath}/produtos" class="nav-link">
 										Produtos </a></li>
 										<li class="nav-item"><a
 									href="admin/listar-txt.html" class="nav-link">

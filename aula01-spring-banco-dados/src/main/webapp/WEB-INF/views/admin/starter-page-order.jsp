@@ -270,14 +270,14 @@
 								<tr>
 									<!--form  START-->
 
-									<form action="/update" method="post" enctype="multipart/form-data">
+									<form action="${pageContext.request.contextPath}/update" method="post" enctype="multipart/form-data">
 										<td> 
 										  
 											<figure class="media">
 												<div class="img-wrap">
 												
 
-													
+												
 
 													<img src="${pageContext.request.contextPath}/imagens/${produtos.imagem.nome}"
 													class="img-thumbnail img-sm">
@@ -352,12 +352,12 @@
 								<div  padding-left: ($spacer * .5) !important;>
 															<%-- --------INICIO escolha de figura para upload------- --%>
 
-														<form class="form-inline" action="/fotos" method="post"
+														<form class="form-inline" action="${pageContext.request.contextPath}/upload" method="post"
 															enctype="multipart/form-data">
 															<div class="input-group mb-3">
 																<div class="custom-file">
 
-																	<input type="file" name="foto"
+																	<input type="file" name="imagem"
 																		class="custom-file-input" id="inputGroupFile02">
 																	<label class="custom-file-label" for="inputGroupFile02"></label>
 

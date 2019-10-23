@@ -29,7 +29,7 @@ public class ProdutoController {
 	private CategoriaService categoriaService;
 
 	@Autowired
-	ImagemService imgService;
+	private ImagemService imgService;
 
 	/* metodo carrega itens para alimentar pagina home e direcioa para home-page */
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
@@ -115,6 +115,61 @@ public class ProdutoController {
 
 		return model;
 	}
+	
+	/*
+	 * método carrega itens para alimentar pagina TXT e direciana para pagina TXT
+	 * 	 * starter-page-order
+	 */
+	@RequestMapping(value = { "/produtos-txt" }, method = RequestMethod.GET)
+	public ModelAndView produtosTxt(@RequestParam(value = "pagina", required = false) Integer page_num,
+
+			ModelAndView model, HttpSession session) {
+
+		if (session.getAttribute("admin") == null) {
+			model.setViewName("redirect:/");
+		} else {
+
+			int totalPorPagina = 5;
+
+			if (page_num == null) {
+				page_num = 1;
+			}
+
+			List<Categoria> categorias = categoriaService.todos();
+			model.addObject("categorias", categorias);
+
+			List<Produto> produtos = produtoService.todosComPaginacao(page_num, totalPorPagina);
+
+			List<Imagem> imagens = imgService.todosComPaginacao(page_num, totalPorPagina);
+
+			for (Imagem imagem : imagens) {
+				for (Produto produto : produtos) {
+					if (produto.getProdutoid() == imagem.getProdutoid()) {
+						produto.setImagem(imagem);
+						System.out
+								.println("Adicionado imagem ao produto ]]]]]]]]]]]]]]]]]]]]]]]]]]" + imagem.getNome());
+					}
+				}
+			}
+
+			for (Produto produto : produtos) {
+				System.out.println("--------------------------------Descrição do produto: " + produto.getDescricao());
+			}
+
+			model.addObject("catEprod", produtos);
+			System.out.println("numero de paginas: " + produtoService.getPaginas());
+			System.out.println("pagina: " + page_num);
+			System.out.println("totalEncontrado: " + produtoService.getTotalEncontrado());
+			model.addObject("numeroDePaginas", produtoService.getPaginas());
+			model.addObject("pagina", page_num);
+			model.addObject("totalEncontrado", produtoService.getTotalEncontrado());
+
+			model.setViewName("/admin/ListarTexto");
+		}
+
+		return model;
+	}
+
 
 	/*
 	 * método adiciona novo produto ao banco de dados e direciana para metodo que

@@ -106,11 +106,10 @@
 						<c:choose>
 							<c:when test="${admin.nome != null}">
 								<li class="nav-item"><a
-									href="${pageContext.request.contextPath}/produtos" class="nav-link">
-										Produtos </a></li>
-										<li class="nav-item"><a
-									href="admin/listar-txt.html" class="nav-link">
-										Produtos JSON </a></li>
+									href="${pageContext.request.contextPath}/produtos"
+									class="nav-link"> Produtos </a></li>
+								<li class="nav-item"><a href="admin/listar-txt.html"
+									class="nav-link"> Produtos JSON </a></li>
 								<li class="nav-item"><a href="#" class="nav-link">
 										Admin: ${admin.nome} </a></li>
 								<li class="nav-item"><a href="\logout" class="nav-link">
@@ -323,15 +322,12 @@
 							<!-- ================= main slide ================= -->
 							<div class="owl-init slider-main owl-carousel" data-items="1"
 								data-nav="true" data-dots="false">
+								<c:forEach var="produtos" items="${tres}">
 								<div class="item-slide">
-									<img src="home_style/images/banners/slide1.jpg">
+									<img src="${pageContext.request.contextPath}/imagens/${produtos.imagem.nome}">
 								</div>
-								<div class="item-slide">
-									<img src="home_style/images/banners/slide2.jpg">
-								</div>
-								<div class="item-slide">
-									<img src="home_style/images/banners/slide3.jpg">
-								</div>
+								</c:forEach>
+								
 							</div>
 							<!-- ============== main slidesow .end // ============= -->
 
@@ -340,34 +336,28 @@
 						<aside class="col-md-3">
 
 							<h6 class="title-bg bg-secondary">Qualified Suppliers</h6>
-							<div style="height: 280px;">
-								<figure class="itemside has-bg border-bottom"
-									style="height: 33%;">
-									<img class="img-bg" src="home_style/images/items/item-sm.png">
-									<figcaption class="p-2">
-										<h6 class="title">One request, many offers</h6>
-										<a href="#">Good link</a>
-									</figcaption>
-								</figure>
 
-								<figure class="itemside has-bg border-bottom"
-									style="height: 33%;">
-									<img class="img-bg" src="home_style/images/items/1.jpg"
-										height="80">
-									<figcaption class="p-2">
-										<h6 class="title">One request, many offers</h6>
-										<a href="#">Good link</a>
-									</figcaption>
-								</figure>
-								<figure class="itemside has-bg border-bottom"
-									style="height: 33%;">
-									<img class="img-bg" src="home_style/images/items/2.jpg"
-										height="80">
-									<figcaption class="p-2">
-										<h6 class="title">One request, many offers</h6>
-										<a href="#">Good link</a>
-									</figcaption>
-								</figure>
+							<%--inicio foreach para as categorias --%>
+							<div style="height: 280px;">
+								<c:forEach var="produtos" items="${tres}">
+
+
+									<figure class="itemside has-bg border-bottom"
+										style="height: 33%;">
+										<img class="img-bg"
+											src="${pageContext.request.contextPath}/imagens/${produtos.imagem.nome}">
+										<figcaption class="p-2">
+											<h6 class="title">Compre</h6>
+											<h6 class="title">agora...</h6>
+											<a href="#">${produtos.nome} </a>
+										</figcaption>
+									</figure>
+
+
+
+
+
+								</c:forEach>
 							</div>
 
 						</aside>

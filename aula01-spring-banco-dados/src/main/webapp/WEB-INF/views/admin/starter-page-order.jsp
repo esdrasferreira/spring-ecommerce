@@ -287,8 +287,11 @@
 
 
 
-													<div class="col">
-														<div class="form-group">
+													<div class="form-group row">
+														<label  class="col-sm-2 col-form-label text-right">Categoria:</label>
+
+													<div class="col-sm-10">
+
 
 															<select class="form-control col-sm-4 text-right"
 																id="exampleFormControlSelect1" name="categoria-id">
@@ -303,15 +306,34 @@
 														</div>
 													</div>
 													</div>
+													
+													<div class="form-group row">
+														<label  class="col-sm-2 col-form-label text-right">Produto:</label>
+
+													<div class="col-sm-10">
+													
 													<input class="form-control mb-2" type="text"
 														name="produtonome" value="${produtos.nome}"
 														style="background-color: white;"
-														placeholder="${produtos.nome}"> <textarea
+														placeholder="${produtos.nome}"> 
+														
+															</div>
+													</div>
+													
+													<div class="form-group row">
+						<label  class="col-sm-2 col-form-label text-right">Descrição:</label>
+
+						<div class="col-sm-10">
+														<textarea
 													class="form-control mb-2"  name="descricaoProduto"
 													style="background-color: white;"
 													placeholder="${produtos.descricao }" rows="3"></textarea>
-														<div class="row"> <%--open row --%>
-														<div class="col"><%--open col1 --%>
+													</div>
+					</div>
+														<div class="form-group row">
+																<label  class="col-sm-2 col-form-label text-right">Valor:</label>
+
+																<div class="col-sm-10">
 														<input class="form-control  col-sm-4  text-right" type="number"
 														name="valorProduto" value="${produtos.valor}"
 														style="background-color: white;"
@@ -319,8 +341,9 @@
 														 <input	type="hidden" name="produtoid"
 														value="${produtos.produtoid}">
 														</div> <%--close col1 --%>
+															</div>
 														
-														</div> <%--close row --%>
+														
 														
 
 

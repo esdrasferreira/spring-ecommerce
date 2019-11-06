@@ -295,7 +295,7 @@ $(document).ready(function() {
 				<p class="text-success">Free shipping</p>
 				<br>
 				<p>
-					<a href="carrinho.html?id=${produtos.produtoid}" class="btn btn-primary"> Buy now </a>
+					<a href="carrinho?id=${produtos.produtoid}" class="btn btn-primary"> Buy now </a>
 					<a href="#" class="btn btn-secondary"> Details  </a>
 				</p>
 				<a href="#"><i class="fa fa-heart"></i> Add to wishlist</a>

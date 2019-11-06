@@ -81,4 +81,10 @@ public class ClienteDao implements DaoGenerico<Cliente> {
 		return null;
 	}
 
+	@Override
+	public List<Cliente> listarPorCategoria(int categoriaId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

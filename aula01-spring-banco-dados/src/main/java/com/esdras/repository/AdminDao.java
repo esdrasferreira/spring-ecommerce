@@ -80,4 +80,10 @@ public class AdminDao implements DaoGenerico<Administrador> {
 		return null;
 	}
 
+	@Override
+	public List<Administrador> listarPorCategoria(int categoriaId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

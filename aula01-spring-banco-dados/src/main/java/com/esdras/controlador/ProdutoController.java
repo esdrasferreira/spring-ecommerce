@@ -52,19 +52,18 @@ public class ProdutoController {
 		model.addObject("categorias2", aposSeisPrimeiras);
 
 		List<Produto> produtos = produtoService.todosComPaginacao(page_num, totalPorPagina);
-		
+
 		List<Imagem> imagens = imgService.todosComPaginacao(page_num, totalPorPagina);
 
 		for (Imagem imagem : imagens) {
 			for (Produto produto : produtos) {
 				if (produto.getProdutoid() == imagem.getProdutoid()) {
 					produto.setImagem(imagem);
-					System.out
-							.println("Adicionado imagem ao produto ]]]]]]]]]]]]]]]]]]]]]]]]]]" + imagem.getNome());
+					System.out.println("Adicionado imagem ao produto ]]]]]]]]]]]]]]]]]]]]]]]]]]" + imagem.getNome());
 				}
 			}
 		}
-		
+
 		List<Produto> tresProdutos = produtos.stream().limit(3).collect(Collectors.toList());
 		model.addObject("tres", tresProdutos);
 		model.addObject("catEprod", produtos);
@@ -76,46 +75,24 @@ public class ProdutoController {
 
 		return model;
 	}
+
 	/* metodo carrega itens para alimentar pagina product-detail ******** */
-	@RequestMapping(value = { "/product" }, method = RequestMethod.GET)
-	public ModelAndView product(@RequestParam(value = "pagina", required = false) Integer page_num,
+	@RequestMapping(value = { "listing" }, method = RequestMethod.GET)
+	public ModelAndView product(@RequestParam(value = "categoria", required = false) Integer categoriaId,
 
 			ModelAndView model) {
 
-		int totalPorPagina = 5;
+//		int totalPorPagina = 5;
+//
+//		if (page_num == null) {
+//			page_num = 1;
+//		}
 
-		if (page_num == null) {
-			page_num = 1;
-		}
+		List<Produto> produtos = produtoService.listarPorCategoria(categoriaId);
 
-		List<Categoria> categorias = categoriaService.todos();
-
-		List<Categoria> seisPrimeiras = categorias.stream().limit(6).collect(Collectors.toList());
-		List<Categoria> aposSeisPrimeiras = categorias.stream().skip(6).collect(Collectors.toList());
-		model.addObject("categorias", categorias);
-		model.addObject("categorias1", seisPrimeiras);
-		model.addObject("categorias2", aposSeisPrimeiras);
-
-		List<Produto> produtos = produtoService.todosComPaginacao(page_num, totalPorPagina);
-		
-		List<Imagem> imagens = imgService.todosComPaginacao(page_num, totalPorPagina);
-
-		for (Imagem imagem : imagens) {
-			for (Produto produto : produtos) {
-				if (produto.getProdutoid() == imagem.getProdutoid()) {
-					produto.setImagem(imagem);
-					System.out
-							.println("Adicionado imagem ao produto ]]]]]]]]]]]]]]]]]]]]]]]]]]" + imagem.getNome());
-				}
-			}
-		}
-		
 		model.addObject("catEprod", produtos);
-		model.addObject("totalEncontrado", produtoService.getTotalEncontrado());
-		model.addObject("numeroDePaginas", produtoService.getPaginas());
-		model.addObject("pagina", page_num);
 
-		model.setViewName("starter-alibaba-product-detail");
+		model.setViewName("starter-page-listing");
 
 		return model;
 	}
@@ -173,10 +150,10 @@ public class ProdutoController {
 
 		return model;
 	}
-	
+
 	/*
-	 * método carrega itens para alimentar pagina TXT e direciana para pagina TXT
-	 * 	 * starter-page-order
+	 * método carrega itens para alimentar pagina TXT e direciana para pagina TXT *
+	 * starter-page-order
 	 */
 	@RequestMapping(value = { "/produtos-txt" }, method = RequestMethod.GET)
 	public ModelAndView produtosTxt(@RequestParam(value = "pagina", required = false) Integer page_num,
@@ -227,7 +204,6 @@ public class ProdutoController {
 
 		return model;
 	}
-
 
 	/*
 	 * método adiciona novo produto ao banco de dados e direciana para metodo que

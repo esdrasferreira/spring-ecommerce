@@ -113,4 +113,10 @@ public class CategoriaDao implements DaoGenerico<Categoria> {
 		return null;
 	}
 
+	@Override
+	public List<Categoria> listarPorCategoria(int categoriaId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

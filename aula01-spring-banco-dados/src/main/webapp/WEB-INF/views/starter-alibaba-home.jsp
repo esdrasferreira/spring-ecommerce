@@ -145,7 +145,7 @@
 								<%--inicio foreach para as categorias --%>
 								<c:forEach var="categorias" items="${categorias}">
 
-									<a class="dropdown-item" href="#">${categorias.nome}</a>
+									<a class="dropdown-item" href="listing?categoria=${categorias.categoriaid}">${categorias.nome}</a>
 
 								</c:forEach>
 								<%--inicio foreach para as categorias --%>

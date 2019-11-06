@@ -81,6 +81,30 @@ public class ProdutoDaoImp implements DaoGenerico<Produto> {
 	}
 
 	@Override
+	public List<Produto> listarPorCategoria(int categoriaId) {
+
+		String sql = "select andregon_ecommerce.produtos.*, andregon_ecommerce.categorias.* from andregon_ecommerce.produtos, andregon_ecommerce.categorias\n"
+				+ "where andregon_ecommerce.produtos.categoriaId = andregon_ecommerce.categorias.categoriaId and andregon_ecommerce.produtos.categoriaId = '"
+				+ categoriaId + "'\n" + "order by andregon_ecommerce.produtos.produtoId desc";
+
+		List<Produto> produtos = jdbcTemplate.query(sql, new RowMapper<Produto>() {
+
+			public Produto mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+				Produto produto = new Produto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
+						rs.getDouble(5));
+				produto.setCategoria(new Categoria(rs.getInt(6), rs.getString(7)));
+
+				return produto;
+
+			}
+		});
+
+		return produtos;
+
+	}
+
+	@Override
 	public Page<Produto> todosComPaginacao(Pageable pageable) {
 
 		String rowCountSql = "SELECT count(1) AS total from andregon_ecommerce.produtos";

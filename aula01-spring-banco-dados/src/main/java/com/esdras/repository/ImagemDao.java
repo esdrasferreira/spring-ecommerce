@@ -125,4 +125,10 @@ public class ImagemDao implements DaoGenerico<Imagem> {
 		return new PageImpl<>(imagens, pageable, total);
 	}
 
+	@Override
+	public List<Imagem> listarPorCategoria(int categoriaId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

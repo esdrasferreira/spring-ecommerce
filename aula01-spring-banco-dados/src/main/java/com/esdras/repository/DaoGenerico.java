@@ -17,6 +17,8 @@ public interface DaoGenerico<T> {
 
 	List<T> listar(T entidade);
 
+	List<T> listarPorCategoria(int categoriaId);
+
 	T pesquisarPorId(int id);
 
 	T pesquisar(T entidade);

@@ -92,6 +92,20 @@ public abstract class GenericService<T> {
 
 	}
 
+	public List<T> listarPorCategoria(int categoriaId) {
+
+		List<T> entidades = null;
+		try {
+
+			entidades = dao.listarPorCategoria(categoriaId);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return entidades;
+
+	}
+
 	public List<T> todosComPaginacao(Integer pagina, int totalPorPagina) {
 		List<T> entidades = null;
 

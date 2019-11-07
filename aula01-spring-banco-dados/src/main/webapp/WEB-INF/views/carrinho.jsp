@@ -133,7 +133,7 @@ $(document).ready(function() {
 
 <div class="card">
 	<!-- ========================= INICIO DO FORM  ========================= -->
-	<form action="atualizar-carrinho.html" method="post">
+	<form action="atualizar-carrinho" method="post">
 <table class="table table-hover shopping-cart-wrap">
 <thead class="text-muted">
 <tr>
@@ -183,7 +183,7 @@ $(document).ready(function() {
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td>
-		<div class="price-wrap"
+		<div class="price-wrap">
 			<c:choose>
 				<c:when test="${carrinho.parcial == null}">
 				<var class="price" id="total-price"><fmt:formatNumber value="${carrinho.produto.valor}" type="currency" /> </var>
@@ -198,8 +198,8 @@ $(document).ready(function() {
 	</main>
 	<td class="text-right">
 
-		<button type="button" class="btn btn-danger">Remove</button>
-
+		<button type="button" onclick="window.location.href='remover?produtoid=${carrinho.produto.produtoid}';" class="btn btn-danger" name="remove">Remove</button>
+		
 	</td>
 </tr>  <!-- fim each   -->
 </c:forEach>
@@ -209,15 +209,7 @@ $(document).ready(function() {
 		<div>
 
 
-			<c:choose>
-				<c:when test="${total > 0}">
-				<h4 align="center">TOTAL:	<var class="price" id="total"><fmt:formatNumber value="${total}" type="currency" /> </var></h4>
-				</c:when>
-				<c:otherwise>
-
-				</c:otherwise>
-
-			</c:choose>
+			
 
 			<button type="submit" class="btn btn-primary">Update</button>
 
@@ -230,6 +222,7 @@ $(document).ready(function() {
 	<aside class="col-sm-3">
 <p class="alert alert-success">Add USD 5.00 of eligible items to your order to qualify for FREE Shipping. </p>
 <dl class="dlist-align">
+
   <dt>Total price: </dt>
   <dd class="text-right">USD 658</dd>
 </dl>
@@ -239,7 +232,14 @@ $(document).ready(function() {
 </dl>
 <dl class="dlist-align h4">
   <dt>Total:</dt>
-  <dd class="text-right"><strong>USD 1,650</strong></dd>
+  <c:choose>
+  <c:when test="${total != null}">
+  <dd class="text-right"><strong><var class="price" id="total"><fmt:formatNumber value="${total}" type="currency" /></var></strong></dd>
+ </c:when>
+ <c:otherwise>
+ <dd class="text-right"><strong><var class="price" id="total"><fmt:formatNumber value="0.00" type="currency" /></var></strong></dd>
+ </c:otherwise>
+  </c:choose>
 </dl>
 <hr>
 

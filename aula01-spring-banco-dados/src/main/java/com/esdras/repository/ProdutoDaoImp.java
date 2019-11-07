@@ -2,7 +2,9 @@ package com.esdras.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -13,6 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.esdras.model.Categoria;
@@ -50,9 +55,15 @@ public class ProdutoDaoImp implements DaoGenerico<Produto> {
 
 	}
 
+	public Produto pesquisarPorIdold(int id) {
+		String sql = "SELECT * FROM `produtos` WHERE `produtoId` = ?";
+		return jdbcTemplate.queryForObject(sql, new Object[] { id }, BeanPropertyRowMapper.newInstance(Produto.class));
+
+	}
+
+	@Override
 	public Produto pesquisarPorId(int id) {
-		String sql = "select * from andregon_ecommerce.produtos where andregon_ecommerce.produtos.produtoid = '" + id
-				+ "'";
+		String sql = "SELECT * FROM `produtos` WHERE `produtoId` = '" + id + "'";
 		return jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Produto.class));
 
 	}
@@ -166,8 +177,48 @@ public class ProdutoDaoImp implements DaoGenerico<Produto> {
 
 	@Override
 	public List<Produto> listPorId(int id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+
+		String sql = "SELECT * FROM `produtos` WHERE `produtoId` = '" + id + "'";
+
+		List<Produto> produtos = jdbcTemplate.query(sql, new RowMapper<Produto>() {
+
+			public Produto mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+				Produto produto = new Produto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
+						rs.getDouble(5));
+
+				return produto;
+
+			}
+		});
+
+		return produtos;
+
+	}
+
+	public List<Produto> listPorIdold(int id) throws Exception {
+		String sql = "SELECT * FROM `produtos` WHERE `produtoId` = '" + id + "'";
+
+		SqlParameterSource mapSqlParams = new MapSqlParameterSource().addValue("id", '%' + id + '%');
+
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+
+		List<Map<String, Object>> rows = namedParameterJdbcTemplate.queryForList(sql, mapSqlParams);
+
+		List<Produto> produtos = new ArrayList<Produto>();
+
+		for (Map<?, ?> row : rows) {
+			Produto produto = new Produto();
+			produto.setProdutoid(Integer.parseInt(String.valueOf(row.get("produtoid"))));
+			produto.setCategoriaid(Integer.parseInt(String.valueOf(row.get("categoriaid"))));
+			produto.setNome((String) row.get("nomeproduto"));
+			produto.setDescricao((String) row.get("descricao"));
+			produto.setValor(Double.parseDouble(String.valueOf(row.get("valor"))));
+
+		}
+
+		return produtos;
+
 	}
 
 }

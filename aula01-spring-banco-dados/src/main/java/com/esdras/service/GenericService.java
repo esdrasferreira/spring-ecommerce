@@ -88,6 +88,12 @@ public abstract class GenericService<T> {
 	public List<T> listPorId(int produtoId) {
 
 		List<T> entidades = null;
+		try {
+			entidades = dao.listPorId(produtoId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return entidades;
 
 	}

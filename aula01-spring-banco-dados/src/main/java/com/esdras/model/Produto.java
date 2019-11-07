@@ -3,7 +3,7 @@ package com.esdras.model;
 public class Produto {
 	private int produtoid;
 	private int categoriaid;
-	private String nome;
+	private String nomeproduto;
 	private String descricao;
 	private Double valor;
 
@@ -13,11 +13,11 @@ public class Produto {
 	public Produto() {
 	}
 
-	public Produto(int produtoid, int categoriaid, String nome, String descricao, Double valor) {
+	public Produto(int produtoid, int categoriaid, String nomeproduto, String descricao, Double valor) {
 
 		this.produtoid = produtoid;
 		this.categoriaid = categoriaid;
-		this.nome = nome;
+		this.nomeproduto = nomeproduto;
 		this.descricao = descricao;
 		this.valor = valor;
 	}
@@ -39,11 +39,11 @@ public class Produto {
 	}
 
 	public String getNome() {
-		return nome;
+		return nomeproduto;
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.nomeproduto = nome;
 	}
 
 	public String getDescricao() {

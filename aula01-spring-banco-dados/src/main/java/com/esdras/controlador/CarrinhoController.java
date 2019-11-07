@@ -1,7 +1,10 @@
 package com.esdras.controlador;
 
+import java.util.Enumeration;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +35,50 @@ public class CarrinhoController {
 
 	/*
 	 * metodo carrega produtos por ID da categoria e alimenta pagina com os produtos
-	 * da categoria listing-page
+	 * da categoria....para listing-page
 	 */
 	@RequestMapping(value = { "carrinho" }, method = RequestMethod.GET)
 	public ModelAndView carrinho(HttpSession session, @RequestParam(value = "id", required = false) Integer idProduto,
 
 			ModelAndView model) {
-		session.getAttribute("carrinho");
+
+		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
+
+		if (carrinho == null) {
+			carrinho = new Carrinho();
+		}
+		System.out.println(idProduto);
+
+		if (idProduto != null) {
+			List<Produto> produto2 = produtoService.listPorId(idProduto);
+
+			for (Produto produto : produto2) {
+				carrinho.add(produto);
+
+				System.out.println(
+						"ID da categoria: " + produto.getCategoriaid() + "||  ID do produto: " + produto.getProdutoid()
+								+ " || Nome do produto: " + produto.getNome() + " || Descrição do produto: "
+								+ produto.getDescricao() + "  ||Valor do produto: " + produto.getValor());
+			}
+		}
+
+		List<Categoria> categorias = categoriaService.todos();
+		model.addObject("categorias", categorias);
+
+		session.setAttribute("idProduto", idProduto);
+		session.setAttribute("carrinho", carrinho);
+
+		model.setViewName("carrinho");
+
+		return model;
+	}
+
+	/*
+	 * atualizar carrinho
+	 */
+	@RequestMapping(value = { "atualizar-carrinho" }, method = RequestMethod.POST)
+	public ModelAndView atualizar(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@RequestParam(value = "id", required = false) Integer idProduto, ModelAndView model) {
 
 		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
 
@@ -46,19 +86,49 @@ public class CarrinhoController {
 			carrinho = new Carrinho();
 		}
 
-		Produto produto = produtoService.pesquisarPorId(idProduto);
-		carrinho.add(produto);
+		Enumeration<?> parametros = request.getParameterNames();
 
-		Double total = carrinho.calc(carrinho);
+		while (parametros.hasMoreElements()) {
+			String param = (String) parametros.nextElement();
+			System.out.println("Parametros :" + param);
+			int lastIndex = param.lastIndexOf("_");
+			String idProduto1 = param.substring(lastIndex + 1);
 
-		List<Categoria> categorias = categoriaService.todos();
-		model.addObject("categorias", categorias);
+			System.out.println(
+					String.format("ID do Produto : %s - Quantidade: %s", idProduto1, request.getParameter(param)));
 
+			Carrinho.atualizar(carrinho, Integer.parseInt(idProduto1), Integer.parseInt(request.getParameter(param)));
+
+		}
+		Double total = carrinho.getTotalGeral();
 		session.setAttribute("total", total);
-		session.setAttribute("idProduto", idProduto);
+
+		model.setViewName("redirect:carrinho");
+
+		return model;
+	}
+
+	/*
+	 * remove item
+	 */
+	@RequestMapping(value = { "remover" }, method = RequestMethod.GET)
+	public ModelAndView remover(HttpSession session,
+			@RequestParam(value = "produtoid", required = false) Integer produtoid,
+
+			ModelAndView model) {
+
+		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
+
+		if (produtoid != null) {
+			carrinho.remove(produtoid);
+		}
+
 		session.setAttribute("carrinho", carrinho);
 
-		model.setViewName("carrinho");
+		Double total = carrinho.getTotalGeral();
+		session.setAttribute("total", total);
+
+		model.setViewName("redirect:carrinho");
 
 		return model;
 	}

@@ -10,10 +10,6 @@ public class Carrinho {
 
 	private Double totalGeral;
 
-	public Double getTotalGeral() {
-		return totalGeral;
-	}
-
 	public void setTotalGeral(Double totalGeral) {
 		this.totalGeral = totalGeral;
 	}
@@ -23,7 +19,7 @@ public class Carrinho {
 	}
 
 	public Carrinho() {
-		this.totalGeral = getTotalGeral();
+
 		itensNoCarrinho = new ArrayList<CarrinhoItem>();
 	}
 
@@ -84,13 +80,10 @@ public class Carrinho {
 
 	}
 
-//    public Double getTotal01() {
-//
-//        return itensNoCarrinho
-//                .stream()
-//                .mapToDouble(e -> e.getQuantidade()* e.getProduto().getPreco())
-//                .sum();
-//    }
+	public Double getTotalGeral() {
+
+		return itensNoCarrinho.stream().mapToDouble(e -> e.getParcial()).sum();
+	}
 
 //    public Double getTotal02() {
 //
@@ -104,18 +97,8 @@ public class Carrinho {
 //        return total;
 //    }
 
-	public double calc(Carrinho carrinho) {
-		double total = 0.0;
-		for (CarrinhoItem itens : carrinho.itensNoCarrinho) {
-
-			if (itens.getParcial() != null) {
-				total += itens.getParcial();
-			} else {
-				return total;
-			}
-		}
-		return total;
-
+	public void remove(int id) {
+		itensNoCarrinho.removeIf(item -> item.getProduto().getProdutoid() == id);
 	}
 
 }
